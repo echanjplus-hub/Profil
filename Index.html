@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil Itilizatè</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #0a1f44;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    flex-direction: column;
+  }
+
+  .container {
+    background: rgba(255,255,255,0.1);
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+  }
+
+  h1 {
+    font-style: italic;
+    color: #FFD700;
+  }
+
+  table {
+    width: 100%;
+    margin: 15px 0;
+    border-collapse: collapse;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    text-align: left;
+  }
+
+  input {
+    width: 90%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: none;
+  }
+
+  button {
+    background: #FFD700;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  button:hover {
+    background: #FFA500;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Profil Itilizatè</h1>
+
+  <!-- Fòm ranpli toujou vizib -->
+  <form id="profileForm">
+    <input type="text" id="name" placeholder="Non itilizatè" required><br>
+    <input type="text" id="phone" placeholder="Nimewo telefòn" required><br>
+    <input type="email" id="email" placeholder="Imel" required><br>
+    <button type="submit" id="saveBtn">Anrejistre</button>
+  </form>
+
+  <!-- Tablodbò profil anba fòm lan -->
+  <div id="profileView">
+    <table>
+      <tr><td>UID:</td><td id="viewUid"></td></tr>
+      <tr><td>Non:</td><td id="viewName"></td></tr>
+      <tr><td>Nimewo:</td><td id="viewPhone"></td></tr>
+      <tr><td>Imel:</td><td id="viewEmail"></td></tr>
+      <tr><td>Sale Balance:</td><td id="viewSaleBalance">0.00 minit</td></tr>
+      <tr><td>Withdraw Balance:</td><td id="viewWithdrawBalance">0.00 Gdes</td></tr>
+    </table>
+  </div>
+
+  <br>
+  <button onclick="window.location.href='home.html'">Retour sou Home</button>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const profileForm = document.getElementById("profileForm");
+  const viewUid = document.getElementById("viewUid");
+  const viewName = document.getElementById("viewName");
+  const viewPhone = document.getElementById("viewPhone");
+  const viewEmail = document.getElementById("viewEmail");
+  const viewSaleBalance = document.getElementById("viewSaleBalance");
+  const viewWithdrawBalance = document.getElementById("viewWithdrawBalance");
+
+  // UID sòti nan Home
+  let uid = localStorage.getItem("uid");
+  if (!uid) {
+    alert("Ou dwe konekte sou Home anvan pou itilize Profil la!");
+    window.location.href = "home.html";
+  }
+
+  const userRef = db.collection("profiles").doc(uid);
+
+  // Chaje done itilizatè pou ranpli fòm ak tablodbò
+  userRef.get().then(doc => {
+    if (doc.exists) {
+      const data = doc.data();
+      document.getElementById("name").value = data.fullName;
+      document.getElementById("phone").value = data.phone;
+      document.getElementById("email").value = data.email;
+
+      viewUid.textContent = uid;
+      viewName.textContent = data.fullName;
+      viewPhone.textContent = data.phone;
+      viewEmail.textContent = data.email;
+      viewSaleBalance.textContent = (data.saleBalance || 0) + " minit";
+      viewWithdrawBalance.textContent = (data.withdrawBalance || 0) + " Gdes";
+    } else {
+      // Premye fwa → tablodbò montre UID sèlman, balans 0
+      viewUid.textContent = uid;
+      viewSaleBalance.textContent = "0.00 minit";
+      viewWithdrawBalance.textContent = "0.00 Gdes";
+    }
+  });
+
+  // Anrejistre oswa modifye
+  profileForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const data = {
+      fullName: document.getElementById("name").value,
+      phone: document.getElementById("phone").value,
+      email: document.getElementById("email").value,
+      saleBalance: 0,
+      withdrawBalance: 0
+    };
+    userRef.set(data).then(() => {
+      // Mete ajou tablodbò
+      viewName.textContent = data.fullName;
+      viewPhone.textContent = data.phone;
+      viewEmail.textContent = data.email;
+      viewSaleBalance.textContent = data.saleBalance + " minit";
+      viewWithdrawBalance.textContent = data.withdrawBalance + " Gdes";
+      alert("Enfòmasyon ou yo anrejistre avèk siksè!");
+    });
+  });
+</script>
+</body>
+</html>
+￼EnterYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil Itilizatè</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #0a1f44;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    flex-direction: column;
+  }
+
+  .container {
+    background: rgba(255,255,255,0.1);
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+  }
+
+  h1 {
+    font-style: italic;
+    color: #FFD700;
+  }
+
+  table {
+    width: 100%;
+    margin: 15px 0;
+    border-collapse: collapse;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    text-align: left;
+  }
+
+  input {
+    width: 90%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: none;
+  }
+
+  button {
+    background: #FFD700;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  button:hover {
+    background: #FFA500;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Profil Itilizatè</h1>
+
+  <!-- Fòm ranpli toujou vizib -->
+  <form id="profileForm">
+    <input type="text" id="name" placeholder="Non itilizatè" required><br>
