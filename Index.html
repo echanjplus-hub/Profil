@@ -1,255 +1,336 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profil Itilizatè</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #0a1f44;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    flex-direction: column;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Echanj Plus | Vèsyon Ofisyèl 2026</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  .container {
-    background: rgba(255,255,255,0.1);
-    padding: 25px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
-  }
+    <style>
+        /* ============================================================
+           CSS ENTEGRE (STYLE KONPLE)
+           ============================================================ */
+        :root {
+            --primary: #0062ff;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --success: #00c853;
+            --danger: #ef4444;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
 
-  h1 {
-    font-style: italic;
-    color: #FFD700;
-  }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--light); color: var(--dark); overflow-x: hidden; }
+        .hidden { display: none !important; }
 
-  table {
-    width: 100%;
-    margin: 15px 0;
-    border-collapse: collapse;
-  }
+        /* AUTH STYLE */
+        .auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: #e2e8f0; }
+        .auth-card { background: white; width: 100%; max-width: 400px; padding: 30px; border-radius: 24px; box-shadow: var(--shadow); }
+        .input-group { position: relative; margin-bottom: 15px; }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+        .input-group input { width: 100%; padding: 12px 15px 12px 45px; border: 1.5px solid #e2e8f0; border-radius: 12px; outline: none; }
+        .btn-primary-pro { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; }
 
-  td {
-    padding: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    text-align: left;
-  }
+        /* SIDEBAR STYLE */
+        .sidebar-pro { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: white; z-index: 5000; transition: 0.4s; box-shadow: 20px 0 50px rgba(0,0,0,0.1); }
+        .sidebar-pro.active { left: 0; }
+        .sidebar-header { padding: 30px 20px; background: var(--dark); color: white; }
+        .user-meta h4 { margin-top: 10px; font-size: 18px; }
+        .user-meta p { font-size: 12px; opacity: 0.7; margin-bottom: 5px; }
+        .menu-item { padding: 15px 20px; display: flex; align-items: center; gap: 15px; font-weight: 600; color: #475569; cursor: pointer; border-bottom: 1px solid #f1f5f9; }
 
-  input {
-    width: 90%;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: none;
-  }
+        /* HOME UI */
+        .main-header { height: 70px; background: white; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; sticky: top; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card-balance-rect { background: var(--dark); margin: 15px; padding: 25px; border-radius: 24px; color: white; box-shadow: var(--shadow); }
+        .carousel-container { margin: 15px; border-radius: 20px; overflow: hidden; height: 150px; }
+        .carousel-wrapper { display: flex; transition: 0.5s; }
+        .slide img { width: 100%; height: 150px; object-fit: cover; }
 
-  button {
-    background: #FFD700;
-    color: black;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-    font-weight: bold;
-  }
+        /* ECHANJ & RETRE */
+        .provider-card { background: white; margin: 10px 15px; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .provider-info img { width: 40px; border-radius: 8px; margin-right: 10px; }
+        .withdraw-card-pro { background: white; margin: 15px; padding: 20px; border-radius: 20px; box-shadow: var(--shadow); }
+        .input-pro-group { margin-bottom: 12px; }
+        .input-pro-group label { font-size: 11px; font-weight: 800; color: #94a3b8; display: block; margin-bottom: 5px; }
+        .input-pro-group input, select { width: 100%; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 10px; }
 
-  button:hover {
-    background: #FFA500;
-  }
-</style>
+        /* CHAT MESSENGER (STAB) */
+        .chat-window { position: fixed; bottom: 85px; right: 15px; width: calc(100% - 30px); max-width: 350px; height: 450px; background: white; border-radius: 20px; display: flex; flex-direction: column; z-index: 4000; box-shadow: 0 15px 40px rgba(0,0,0,0.2); transition: 0.3s; }
+        .chat-closed { transform: translateY(120%); opacity: 0; pointer-events: none; }
+        .chat-header-pro { background: var(--primary); padding: 15px; color: white; border-radius: 20px 20px 0 0; display: flex; justify-content: space-between; }
+        .chat-body-pro { flex: 1; padding: 15px; overflow-y: auto; background: #f0f2f5; display: flex; flex-direction: column; gap: 10px; }
+        .m-box { padding: 10px; border-radius: 15px; font-size: 13px; max-width: 80%; }
+        .m-user { background: var(--primary); color: white; align-self: flex-end; }
+        .m-admin { background: white; align-self: flex-start; }
+        .chat-footer-pro { padding: 10px; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        .chat-footer-pro input { flex: 1; padding: 10px; border: none; background: #f0f2f5; border-radius: 20px; outline: none; }
+
+        /* NAV ANBA */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: white; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #94a3b8; cursor: pointer; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 20px; }
+
+        /* ABOUT MODAL */
+        .modal-about { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 6000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .about-card { background: white; padding: 25px; border-radius: 20px; max-width: 400px; text-align: center; }
+    </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>Profil Itilizatè</h1>
+    <div id="auth-page" class="auth-container">
+        <div class="auth-card">
+            <center><img src="https://i.postimg.cc/vTtVtB8P/20260205-163353-removebg-preview.png" style="width: 80px;"></center>
+            <div id="login-section">
+                <h2 style="text-align: center; margin: 10px 0;">Konekte</h2>
+                <div class="input-group"><i class="fa fa-envelope"></i><input type="email" id="login-email" placeholder="Email"></div>
+                <div class="input-group"><i class="fa fa-lock"></i><input type="password" id="login-pass" placeholder="Modpas"></div>
+                <button class="btn-primary-pro" onclick="handleLogin()">KONEKTE</button>
+                <p style="text-align:center; margin-top:15px; font-size:13px;">Poko gen kont? <span style="color:var(--primary); font-weight:bold; cursor:pointer;" onclick="toggleAuth('signup')">Enskri</span></p>
+            </div>
+            <div id="signup-section" class="hidden">
+                <h2 style="text-align: center; margin: 10px 0;">Kreye Kont</h2>
+                <div class="input-group"><i class="fa fa-user"></i><input type="text" id="sign-name" placeholder="Non Konplè"></div>
+                <div class="input-group"><i class="fa fa-phone"></i><input type="tel" id="sign-phone" placeholder="Telefòn (MonCash/NatCash)"></div>
+                <div class="input-group"><i class="fa fa-envelope"></i><input type="email" id="sign-email" placeholder="Email"></div>
+                <div class="input-group"><i class="fa fa-lock"></i><input type="password" id="sign-pass" placeholder="Modpas (6+)"></div>
+                <button class="btn-primary-pro" onclick="handleSignup()">ANSKRI</button>
+                <p style="text-align:center; margin-top:15px; font-size:13px;" onclick="toggleAuth('login')">Gen kont deja? Konekte</p>
+            </div>
+        </div>
+    </div>
 
-  <!-- Fòm ranpli toujou vizib -->
-  <form id="profileForm">
-    <input type="text" id="name" placeholder="Non itilizatè" required><br>
-    <input type="text" id="phone" placeholder="Nimewo telefòn" required><br>
-    <input type="email" id="email" placeholder="Imel" required><br>
-    <button type="submit" id="saveBtn">Anrejistre</button>
-  </form>
+    <div id="home-page" class="hidden">
+        <div id="sidebar" class="sidebar-pro">
+            <div class="sidebar-header">
+                <div class="user-meta">
+                    <p id="side-id" style="font-weight: bold; color: var(--primary);">ARS-ID</p>
+                    <h4 id="side-name">Non Kliyan</h4>
+                    <p id="side-email">email@egzanp.com</p>
+                    <p id="side-phone">509 0000-0000</p>
+                </div>
+            </div>
+            <div class="sidebar-menu">
+                <div class="menu-item" onclick="showPage('paj-akey')"><i class="fa fa-house"></i> Akèy</div>
+                <div class="menu-item" onclick="showAbout()"><i class="fa fa-circle-info"></i> About Echanj Plus</div>
+                <div class="menu-item" style="color:var(--danger)" onclick="handleLogout()"><i class="fa fa-right-from-bracket"></i> Dekonekte</div>
+            </div>
+        </div>
 
-  <!-- Tablodbò profil anba fòm lan -->
-  <div id="profileView">
-    <table>
-      <tr><td>UID:</td><td id="viewUid"></td></tr>
-      <tr><td>Non:</td><td id="viewName"></td></tr>
-      <tr><td>Nimewo:</td><td id="viewPhone"></td></tr>
-      <tr><td>Imel:</td><td id="viewEmail"></td></tr>
-      <tr><td>Sale Balance:</td><td id="viewSaleBalance">0.00 minit</td></tr>
-      <tr><td>Withdraw Balance:</td><td id="viewWithdrawBalance">0.00 Gdes</td></tr>
-    </table>
-  </div>
+        <header class="main-header">
+            <i class="fa fa-bars-staggered" style="font-size: 24px;" onclick="toggleSidebar()"></i>
+            <div style="font-weight: 800; color: var(--primary);">ECHANJ PLUS</div>
+            <i class="fa fa-bell"></i>
+        </header>
 
-  <br>
-  <button onclick="window.location.href='home.html'">Retour sou Home</button>
-</div>
+        <main style="padding-bottom: 80px;">
+            <section id="paj-akey">
+                <div class="carousel-container">
+                    <div class="carousel-wrapper" id="carousel-slider">
+                        <div class="slide"><img src="https://i.postimg.cc/gkVX6Kp9/1771501449871-(1).jpg"></div>
+                        <div class="slide"><img src="https://i.postimg.cc/tCZnCHr8/1771501480676-(1).jpg"></div>
+                    </div>
+                </div>
+                <div class="card-balance-rect">
+                    <p>Balans ou</p>
+                    <h1><span id="user-balance">0.00</span> <small style="font-size:15px">HTG</small></h1>
+                </div>
+                <div class="provider-card" onclick="showPage('paj-echanj')">
+                    <div class="provider-info"><i class="fa fa-rotate" style="color:var(--primary)"></i> <b>Kòmanse yon echanj</b></div>
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+            </section>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+            <section id="paj-echanj" class="hidden">
+                <h3 style="padding:15px;">Echanj Minit</h3>
+                <div class="provider-card" onclick="openDialer('digicel')">
+                    <div class="provider-info"><img src="https://i.postimg.cc/zvH2mMwz/Digicel.jpg"> <b>Digicel (99 > 1001)</b></div>
+                    <i class="fa fa-phone"></i>
+                </div>
+                <div class="provider-card" onclick="openDialer('natcom')">
+                    <div class="provider-info"><img src="https://i.postimg.cc/6q4bsSVK/natcom.webp"> <b>Natcom (99 > 501)</b></div>
+                    <i class="fa fa-phone"></i>
+                </div>
+            </section>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "SENDER_ID",
-    appId: "APP_ID"
-  };
+            <section id="paj-retre" class="hidden">
+                <div class="withdraw-card-pro">
+                    <h3>Retire Lajan</h3><br>
+                    <div class="input-pro-group"><label>Non sou kont lan</label><input type="text" id="retre-name"></div>
+                    <div class="input-pro-group"><label>Nimewo</label><input type="tel" id="retre-phone"></div>
+                    <div class="input-pro-group"><label>Metòd</label><select id="retre-method"><option>MonCash</option><option>NatCash</option></select></div>
+                    <div class="input-pro-group"><label>Montan</label><input type="number" id="retre-amount"></div>
+                    <button class="btn-primary-pro" onclick="processRetre()">KONFIME RETRÈ</button>
+                </div>
+            </section>
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+            <section id="paj-trans" class="hidden">
+                <h3 style="padding:15px;">Istorik</h3>
+                <div id="transaction-list" style="padding:15px;"></div>
+            </section>
+        </main>
 
-  const profileForm = document.getElementById("profileForm");
-  const viewUid = document.getElementById("viewUid");
-  const viewName = document.getElementById("viewName");
-  const viewPhone = document.getElementById("viewPhone");
-  const viewEmail = document.getElementById("viewEmail");
-  const viewSaleBalance = document.getElementById("viewSaleBalance");
-  const viewWithdrawBalance = document.getElementById("viewWithdrawBalance");
+        <div id="user-chat-box" class="chat-window chat-closed">
+            <div class="chat-header-pro"><span>Sipò Echanj Plus</span><i class="fa fa-x" onclick="toggleChat()"></i></div>
+            <div id="chat-messages" class="chat-body-pro"></div>
+            <div class="chat-footer-pro">
+                <input type="text" id="chat-input-text" placeholder="Ekri nou la...">
+                <button onclick="sendMessage()" style="border:none; background:var(--primary); color:white; padding:10px; border-radius:50%;"><i class="fa fa-paper-plane"></i></button>
+            </div>
+        </div>
 
-  // UID sòti nan Home
-  let uid = localStorage.getItem("uid");
-  if (!uid) {
-    alert("Ou dwe konekte sou Home anvan pou itilize Profil la!");
-    window.location.href = "home.html";
-  }
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="showPage('paj-akey', this)"><i class="fa fa-house"></i><span>Akèy</span></div>
+            <div class="nav-item" onclick="showPage('paj-echanj', this)"><i class="fa fa-rotate"></i><span>Echanj</span></div>
+            <div class="nav-item" onclick="showPage('paj-retre', this)"><i class="fa fa-money-bill-transfer"></i><span>Retrè</span></div>
+            <div class="nav-item" onclick="showPage('paj-trans', this)"><i class="fa fa-clock"></i><span>Istorik</span></div>
+            <div class="nav-item" onclick="toggleChat()"><i class="fa fa-comments" style="color:var(--primary)"></i><span>Sipò</span></div>
+        </nav>
+    </div>
 
-  const userRef = db.collection("profiles").doc(uid);
+    <div id="modal-about" class="modal-about hidden">
+        <div class="about-card">
+            <img src="https://i.postimg.cc/vTtVtB8P/20260205-163353-removebg-preview.png" style="width:60px;">
+            <h3>Konsènan Echanj Plus</h3>
+            <p style="font-size:14px; color:#666; margin:15px 0;">Echanj Plus se platfòm nimewo 1 an Ayiti ki pèmèt ou transfòme minit Digicel ak Natcom ou an kòb kach sou MonCash oswa NatCash rapidman ak sekirite 24/7.</p>
+            <button class="btn-primary-pro" onclick="closeAbout()">OK, DAKÒ</button>
+        </div>
+    </div>
 
-  // Chaje done itilizatè pou ranpli fòm ak tablodbò
-  userRef.get().then(doc => {
-    if (doc.exists) {
-      const data = doc.data();
-      document.getElementById("name").value = data.fullName;
-      document.getElementById("phone").value = data.phone;
-      document.getElementById("email").value = data.email;
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+        import { getDatabase, ref, set, push, onValue, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-      viewUid.textContent = uid;
-      viewName.textContent = data.fullName;
-      viewPhone.textContent = data.phone;
-      viewEmail.textContent = data.email;
-      viewSaleBalance.textContent = (data.saleBalance || 0) + " minit";
-      viewWithdrawBalance.textContent = (data.withdrawBalance || 0) + " Gdes";
-    } else {
-      // Premye fwa → tablodbò montre UID sèlman, balans 0
-      viewUid.textContent = uid;
-      viewSaleBalance.textContent = "0.00 minit";
-      viewWithdrawBalance.textContent = "0.00 Gdes";
-    }
-  });
+        const firebaseConfig = {
+            apiKey: "AIzaSyB1VTPakleoggsbLdpm_HS7nSb3A7A99Qw",
+            authDomain: "echanj-plus-778cd.firebaseapp.com",
+            databaseURL: "https://echanj-plus-778cd-default-rtdb.firebaseio.com",
+            projectId: "echanj-plus-778cd",
+            storageBucket: "echanj-plus-778cd.firebasestorage.app",
+            messagingSenderId: "111144762929",
+            appId: "1:111144762929:web:e64ce9a6da65781c289f10"
+        };
 
-  // Anrejistre oswa modifye
-  profileForm.addEventListener("submit", e => {
-    e.preventDefault();
-    const data = {
-      fullName: document.getElementById("name").value,
-      phone: document.getElementById("phone").value,
-      email: document.getElementById("email").value,
-      saleBalance: 0,
-      withdrawBalance: 0
-    };
-    userRef.set(data).then(() => {
-      // Mete ajou tablodbò
-      viewName.textContent = data.fullName;
-      viewPhone.textContent = data.phone;
-      viewEmail.textContent = data.email;
-      viewSaleBalance.textContent = data.saleBalance + " minit";
-      viewWithdrawBalance.textContent = data.withdrawBalance + " Gdes";
-      alert("Enfòmasyon ou yo anrejistre avèk siksè!");
-    });
-  });
-</script>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        let uID, userData;
+
+        // AUTH LOGIC
+        window.handleSignup = async () => {
+            const name = document.getElementById('sign-name').value;
+            const phone = document.getElementById('sign-phone').value;
+            const email = document.getElementById('sign-email').value;
+            const pass = document.getElementById('sign-pass').value;
+            try {
+                const res = await createUserWithEmailAndPassword(auth, email, pass);
+                await set(ref(db, `users/${res.user.uid}`), {
+                    name, phone, email, balance: 0, ars_id: "ARS-"+Math.floor(1000+Math.random()*9000)
+                });
+                location.reload();
+            } catch(e) { alert(e.message); }
+        };
+
+        window.handleLogin = async () => {
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+            try { await signInWithEmailAndPassword(auth, email, pass); } catch(e) { alert("Erè koneksyon"); }
+        };
+
+        window.handleLogout = () => signOut(auth).then(() => location.reload());
+
+        // STATE CHANGE
+        onAuthStateChanged(auth, (user) => {
+            if(user) {
+                uID = user.uid;
+                document.getElementById('auth-page').classList.add('hidden');
+                document.getElementById('home-page').classList.remove('hidden');
+                onValue(ref(db, `users/${uID}`), (snap) => {
+                    userData = snap.val();
+                    document.getElementById('user-balance').innerText = userData.balance.toFixed(2);
+                    document.getElementById('side-name').innerText = userData.name;
+                    document.getElementById('side-id').innerText = userData.ars_id;
+                    document.getElementById('side-email').innerText = userData.email;
+                    document.getElementById('side-phone').innerText = userData.phone;
+                });
+                listenChat();
+                loadTrans();
+            }
+        });
+
+        // ACTIONS
+        window.openDialer = (provider) => {
+            let amount = prompt("Konbe Gdes w ap voye?");
+            if(!amount || amount < 50) return alert("Minimòm 50G");
+            let code = provider === 'digicel' ? `*128*50947111123*${amount}#` : `*123*88888888*32160708*${amount}#`;
+            window.location.href = "tel:" + code.replace("#", "%23");
+            push(ref(db, `transactions/${uID}`), { type: "Echanj "+provider, amount, status: "An atant", date: Date.now() });
+        };
+
+        window.processRetre = async () => {
+            const amount = parseFloat(document.getElementById('retre-amount').value);
+            if(amount > userData.balance || amount < 100) return alert("Balans ensifizan oswa montan twa piti");
+            await update(ref(db, `users/${uID}`), { balance: userData.balance - amount });
+            push(ref(db, `transactions/${uID}`), { type: "Retrè", amount, status: "Peye", date: Date.now() });
+            alert("Retrè voye!");
+        };
+
+        // CHAT LOGIC
+        window.sendMessage = () => {
+            const txt = document.getElementById('chat-input-text').value;
+            if(!txt) return;
+            push(ref(db, `chats/${uID}`), { sender: 'user', text: txt });
+            document.getElementById('chat-input-text').value = "";
+        };
+
+        function listenChat() {
+            onValue(ref(db, `chats/${uID}`), (snap) => {
+                const box = document.getElementById('chat-messages');
+                box.innerHTML = "";
+                snap.forEach(c => {
+                    const m = c.val();
+                    box.innerHTML += `<div class="m-box ${m.sender==='user'?'m-user':'m-admin'}">${m.text}</div>`;
+                });
+                box.scrollTop = box.scrollHeight;
+            });
+        }
+
+        function loadTrans() {
+            onValue(ref(db, `transactions/${uID}`), (snap) => {
+                const list = document.getElementById('transaction-list');
+                list.innerHTML = "";
+                snap.forEach(c => {
+                    const t = c.val();
+                    list.innerHTML = `<div class="provider-card"><div><b>${t.type}</b><br><small>${t.status}</small></div><b>${t.amount} G</b></div>` + list.innerHTML;
+                });
+            });
+        }
+    </script>
+
+    <script>
+        // UI HELPERS
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+        function toggleChat() { document.getElementById('user-chat-box').classList.toggle('chat-closed'); }
+        function showPage(id, el) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if(el) el.classList.add('active');
+            if(document.getElementById('sidebar').classList.contains('active')) toggleSidebar();
+        }
+        function showAbout() { document.getElementById('modal-about').classList.remove('hidden'); toggleSidebar(); }
+        function closeAbout() { document.getElementById('modal-about').classList.add('hidden'); }
+
+        // Carousel
+        let idx = 0;
+        setInterval(() => {
+            idx = (idx + 1) % 2;
+            const slider = document.getElementById('carousel-slider');
+            if(slider) slider.style.transform = `translateX(-${idx * 100}%)`;
+        }, 3000);
+    </script>
 </body>
 </html>
-￼EnterYPE html>
-<html lang="ht">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profil Itilizatè</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #0a1f44;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    flex-direction: column;
-  }
-
-  .container {
-    background: rgba(255,255,255,0.1);
-    padding: 25px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
-  }
-
-  h1 {
-    font-style: italic;
-    color: #FFD700;
-  }
-
-  table {
-    width: 100%;
-    margin: 15px 0;
-    border-collapse: collapse;
-  }
-
-  td {
-    padding: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    text-align: left;
-  }
-
-  input {
-    width: 90%;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: none;
-  }
-
-  button {
-    background: #FFD700;
-    color: black;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-    font-weight: bold;
-  }
-
-  button:hover {
-    background: #FFA500;
-  }
-</style>
-</head>
-<body>
-
-<div class="container">
-  <h1>Profil Itilizatè</h1>
-
-  <!-- Fòm ranpli toujou vizib -->
-  <form id="profileForm">
-    <input type="text" id="name" placeholder="Non itilizatè" required><br>
